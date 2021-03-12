@@ -3,21 +3,14 @@ extends Node
 
 export (PackedScene) var Mob
 var score 
-# Declare member variables here. Examples:
-# var a = 2
-# var b = "text"
 
-
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	randomize()
 	new_game()
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
-
 
 func _on_Player_hit():
 	pass # Replace with function body.
@@ -25,7 +18,7 @@ func _on_Player_hit():
 func game_over():
 	$ScoreTimer.stop()
 	$mobTimer.stop()
-
+	$HUD.show_game_over()
 func new_game():
 	score = 0
 	$Player.start($StartPosition.position)
@@ -34,10 +27,11 @@ func new_game():
 func _on_StartTimer_timeout():
 	$MobTimer.start()
 	$ScoreTimer.start()
-
+	$HUD.update_score(score)
+	$HUD.show_message("Get Ready")
 func _on_ScoreTimer_timeout():
 	score += 1	
-
+	$HUD.update_score(score)
 func _on_MobTimer_timeout():
 	# Choose a random location on Path2D.
 	$MobPath/MobSpawnLocation.offset = randi()
